@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="Quiz Game"/>
+        <attribute name="authors" value=""/>
+        <attribute name="about" value="Player struct equivalent uses Player_ID, Player_Name, and Player_Score arrays. Matching indexes represent one Player."/>
+        <attribute name="saved" value="2569-11-15 09:25:28 AM"/>
+        <attribute name="created" value="dXNlcjtERVNLVE9QLTRLNUpFMlE7MjU2OS0xMS0xNTswOToxNzo0NyBBTTsyNzcx"/>
+        <attribute name="edited" value="dXNlcjtERVNLVE9QLTRLNUpFMlE7MjU2OS0xMS0xNTswOToyNToyOCBBTTsxOzI4Nzc="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="PlayerID" type="Integer" array="True" size="50"/>
+            <declare name="PlayerName" type="String" array="True" size="50"/>
+            <declare name="PlayerScore" type="Integer" array="True" size="50"/>
+            <declare name="playerCount" type="Integer" array="False" size=""/>
+            <declare name="choice" type="Integer" array="False" size=""/>
+            <assign variable="playerCount" expression="0"/>
+            <assign variable="choice" expression="-1"/>
+            <while expression="choice != 0">
+                <output expression="&quot;========== QUIZ GAME ==========&quot;" newline="True"/>
+                <output expression="&quot;1. Player Name&quot;" newline="True"/>
+                <output expression="&quot;2. Play Game&quot;" newline="True"/>
+                <output expression="&quot;3. Show Player Score&quot;" newline="True"/>
+                <output expression="&quot;4. All Score Board&quot;" newline="True"/>
+                <output expression="&quot;0. Exit&quot;" newline="True"/>
+                <output expression="&quot;Select Menu: &quot;" newline="False"/>
+                <input variable="choice"/>
+                <if expression="choice == 1">
+                    <then>
+                        <assign variable="playerCount" expression="InputName(PlayerID, PlayerName, PlayerScore, playerCount)"/>
+                    </then>
+                    <else>
+                        <if expression="choice == 2">
+                            <then>
+                                <call expression="Play(PlayerID, PlayerName, PlayerScore, playerCount)"/>
+                            </then>
+                            <else>
+                                <if expression="choice == 3">
+                                    <then>
+                                        <call expression="ShowScore(PlayerID, PlayerName, PlayerScore, playerCount)"/>
+                                    </then>
+                                    <else>
+                                        <if expression="choice == 4">
+                                            <then>
+                                                <call expression="AllScore(PlayerID, PlayerName, PlayerScore, playerCount)"/>
+                                            </then>
+                                            <else>
+                                                <if expression="choice == 0">
+                                                    <then>
+                                                        <output expression="&quot;Goodbye!&quot;" newline="True"/>
+                                                    </then>
+                                                    <else>
+                                                        <output expression="&quot;Invalid Menu! Try again.&quot;" newline="True"/>
+                                                    </else>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                            </else>
+                        </if>
+                    </else>
+                </if>
+            </while>
+        </body>
+    </function>
+    <function name="AllScore" type="None" variable="">
+        <parameters>
+            <parameter name="PlayerID" type="Integer" array="True"/>
+            <parameter name="PlayerName" type="String" array="True"/>
+            <parameter name="PlayerScore" type="Integer" array="True"/>
+            <parameter name="playerCount" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <if expression="playerCount == 0">
+                <then>
+                    <output expression="&quot;No Player Data!&quot;" newline="True"/>
+                </then>
+                <else>
+                    <call expression="SortScore(PlayerID, PlayerName, PlayerScore, playerCount)"/>
+                    <output expression="&quot;============== SCORE BOARD ==============&quot;" newline="True"/>
+                    <output expression="&quot;Rank       Player Name          Score&quot;" newline="True"/>
+                    <for variable="i" start="0" end="playerCount - 1" direction="inc" step="1">
+                        <output expression="ToString(i + 1) &amp; &quot;          &quot; &amp; PlayerName[i] &amp; &quot;          &quot; &amp; ToString(PlayerScore[i])" newline="True"/>
+                    </for>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="InputName" type="Integer" variable="result">
+        <parameters>
+            <parameter name="PlayerID" type="Integer" array="True"/>
+            <parameter name="PlayerName" type="String" array="True"/>
+            <parameter name="PlayerScore" type="Integer" array="True"/>
+            <parameter name="playerCount" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="result" type="Integer" array="False" size=""/>
+            <declare name="addCount" type="Integer" array="False" size=""/>
+            <declare name="j" type="Integer" array="False" size=""/>
+            <assign variable="result" expression="playerCount"/>
+            <if expression="playerCount &gt;= 50">
+                <then>
+                    <output expression="&quot;Player list is full!&quot;" newline="True"/>
+                </then>
+                <else>
+                    <output expression="&quot;How many players do you want to add? &quot;" newline="False"/>
+                    <input variable="addCount"/>
+                    <if expression="addCount &lt;= 0 or addCount &gt; 50 - playerCount">
+                        <then>
+                            <output expression="&quot;Invalid number of players!&quot;" newline="True"/>
+                        </then>
+                        <else>
+                            <for variable="j" start="0" end="addCount - 1" direction="inc" step="1">
+                                <assign variable="PlayerID[playerCount]" expression="playerCount + 1"/>
+                                <output expression="&quot;Enter Player Name for ID &quot; &amp; ToString(PlayerID[playerCount])" newline="False"/>
+                                <input variable="PlayerName[playerCount]"/>
+                                <assign variable="PlayerScore[playerCount]" expression="0"/>
+                                <assign variable="playerCount" expression="playerCount + 1"/>
+                                <assign variable="result" expression="playerCount"/>
+                            </for>
+                            <output expression="&quot;Input Player Data Successfully!&quot;" newline="True"/>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="Play" type="None" variable="">
+        <parameters>
+            <parameter name="PlayerID" type="Integer" array="True"/>
+            <parameter name="PlayerName" type="String" array="True"/>
+            <parameter name="PlayerScore" type="Integer" array="True"/>
+            <parameter name="playerCount" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="id" type="Integer" array="False" size=""/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <declare name="found" type="Boolean" array="False" size=""/>
+            <assign variable="found" expression="False"/>
+            <if expression="playerCount == 0">
+                <then>
+                    <output expression="&quot;Please add player first!&quot;" newline="True"/>
+                </then>
+                <else>
+                    <output expression="&quot;========== SELECT PLAYER ==========&quot;" newline="True"/>
+                    <for variable="i" start="0" end="playerCount - 1" direction="inc" step="1">
+                        <output expression="ToString(PlayerID[i]) &amp; &quot;. &quot; &amp; PlayerName[i]" newline="True"/>
+                    </for>
+                    <output expression="&quot;Enter Player ID: &quot;" newline="False"/>
+                    <input variable="id"/>
+                    <for variable="i" start="0" end="playerCount - 1" direction="inc" step="1">
+                        <if expression="PlayerID[i] == id and not found">
+                            <then>
+                                <assign variable="found" expression="True"/>
+                                <output expression="&quot;Welcome &quot; &amp; PlayerName[i] &amp; &quot;!&quot;" newline="True"/>
+                                <assign variable="PlayerScore[i]" expression="ShowQuestion(i, PlayerScore[i])"/>
+                            </then>
+                            <else/>
+                        </if>
+                    </for>
+                </else>
+            </if>
+            <if expression="not found">
+                <then>
+                    <output expression="&quot;Player not found!&quot;" newline="True"/>
+                </then>
+                <else/>
+            </if>
+        </body>
+    </function>
+    <function name="ShowQuestion" type="Integer" variable="totalScore">
+        <parameters>
+            <parameter name="playerIndex" type="Integer" array="False"/>
+            <parameter name="currentScore" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="totalScore" type="Integer" array="False" size=""/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <declare name="answer" type="String" array="False" size=""/>
+            <declare name="correct" type="Integer" array="False" size=""/>
+            <assign variable="correct" expression="0"/>
+            <output expression="&quot;========== QUIZ START ==========&quot;" newline="True"/>
+            <for variable="i" start="0" end="3" direction="inc" step="1">
+                <if expression="i == 0">
+                    <then>
+                        <output expression="&quot;Question 1: What is the capital of Thailand?&quot;" newline="True"/>
+                        <output expression="&quot;A. Bangkok   B. Tokyo   C. Seoul   D. Beijing&quot;" newline="True"/>
+                    </then>
+                    <else/>
+                </if>
+                <if expression="i == 1">
+                    <then>
+                        <output expression="&quot;Question 2: How many days are there in a week?&quot;" newline="True"/>
+                        <output expression="&quot;A. 5 Days   B. 6 Days   C. 7 Days   D. 8 Days&quot;" newline="True"/>
+                    </then>
+                    <else/>
+                </if>
+                <if expression="i == 2">
+                    <then>
+                        <output expression="&quot;Question 3: What is 5 + 5?&quot;" newline="True"/>
+                        <output expression="&quot;A. 8   B. 9   C. 10   D. 11&quot;" newline="True"/>
+                    </then>
+                    <else/>
+                </if>
+                <if expression="i == 3">
+                    <then>
+                        <output expression="&quot;Question 4: Which language is used in this program?&quot;" newline="True"/>
+                        <output expression="&quot;A. Python   B. Java   C. C   D. HTML&quot;" newline="True"/>
+                    </then>
+                    <else/>
+                </if>
+                <output expression="&quot;Your Answer: &quot;" newline="False"/>
+                <input variable="answer"/>
+                <if expression="(i == 0 and (answer == &quot;A&quot; or answer == &quot;a&quot;)) or (i == 1 and (answer == &quot;C&quot; or answer == &quot;c&quot;)) or (i == 2 and (answer == &quot;C&quot; or answer == &quot;c&quot;)) or (i == 3 and (answer == &quot;C&quot; or answer == &quot;c&quot;))">
+                    <then>
+                        <output expression="&quot;Correct! +10 Points&quot;" newline="True"/>
+                        <assign variable="correct" expression="correct + 1"/>
+                    </then>
+                    <else>
+                        <output expression="&quot;Wrong Answer! +0 Points&quot;" newline="True"/>
+                    </else>
+                </if>
+            </for>
+            <assign variable="totalScore" expression="currentScore + correct * 10"/>
+            <output expression="&quot;========== GAME RESULT ==========&quot;" newline="True"/>
+            <output expression="&quot;Correct: &quot; &amp; ToString(correct) &amp; &quot; / 4&quot;" newline="True"/>
+            <output expression="&quot;Score: &quot; &amp; ToString(correct * 10)" newline="True"/>
+            <output expression="&quot;Total Score: &quot; &amp; ToString(totalScore)" newline="True"/>
+        </body>
+    </function>
+    <function name="ShowScore" type="None" variable="">
+        <parameters>
+            <parameter name="PlayerID" type="Integer" array="True"/>
+            <parameter name="PlayerName" type="String" array="True"/>
+            <parameter name="PlayerScore" type="Integer" array="True"/>
+            <parameter name="playerCount" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="id" type="Integer" array="False" size=""/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <declare name="found" type="Boolean" array="False" size=""/>
+            <assign variable="found" expression="False"/>
+            <if expression="playerCount == 0">
+                <then>
+                    <output expression="&quot;No Player Data!&quot;" newline="True"/>
+                </then>
+                <else>
+                    <output expression="&quot;Enter Player ID: &quot;" newline="False"/>
+                    <input variable="id"/>
+                    <for variable="i" start="0" end="playerCount - 1" direction="inc" step="1">
+                        <if expression="PlayerID[i] == id and not found">
+                            <then>
+                                <assign variable="found" expression="True"/>
+                                <output expression="&quot;========== PLAYER SCORE ==========&quot;" newline="True"/>
+                                <output expression="&quot;Player ID: &quot; &amp; ToString(PlayerID[i])" newline="True"/>
+                                <output expression="&quot;Player Name: &quot; &amp; PlayerName[i]" newline="True"/>
+                                <output expression="&quot;Player Score: &quot; &amp; ToString(PlayerScore[i])" newline="True"/>
+                            </then>
+                            <else/>
+                        </if>
+                    </for>
+                    <if expression="not found">
+                        <then>
+                            <output expression="&quot;Player not found!&quot;" newline="True"/>
+                        </then>
+                        <else/>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="SortScore" type="None" variable="">
+        <parameters>
+            <parameter name="PlayerID" type="Integer" array="True"/>
+            <parameter name="PlayerName" type="String" array="True"/>
+            <parameter name="PlayerScore" type="Integer" array="True"/>
+            <parameter name="playerCount" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <declare name="j" type="Integer" array="False" size=""/>
+            <declare name="tempID" type="Integer" array="False" size=""/>
+            <declare name="tempName" type="String" array="False" size=""/>
+            <declare name="tempScore" type="Integer" array="False" size=""/>
+            <for variable="i" start="0" end="playerCount - 2" direction="inc" step="1">
+                <for variable="j" start="0" end="playerCount - i - 2" direction="inc" step="1">
+                    <if expression="PlayerScore[j] &lt; PlayerScore[j + 1]">
+                        <then>
+                            <assign variable="tempScore" expression="PlayerScore[j]"/>
+                            <assign variable="PlayerScore[j]" expression="PlayerScore[j + 1]"/>
+                            <assign variable="PlayerScore[j + 1]" expression="tempScore"/>
+                            <assign variable="tempID" expression="PlayerID[j]"/>
+                            <assign variable="PlayerID[j]" expression="PlayerID[j + 1]"/>
+                            <assign variable="PlayerID[j + 1]" expression="tempID"/>
+                            <assign variable="tempName" expression="PlayerName[j]"/>
+                            <assign variable="PlayerName[j]" expression="PlayerName[j + 1]"/>
+                            <assign variable="PlayerName[j + 1]" expression="tempName"/>
+                        </then>
+                        <else/>
+                    </if>
+                </for>
+            </for>
+        </body>
+    </function>
+</flowgorithm>
